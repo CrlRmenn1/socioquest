@@ -56,9 +56,9 @@ function ModulePreview({ variant }) {
 
   if (variant === 'analyze') {
     return (
-      <div className="relative mx-auto h-[320px] w-full max-w-[300px] md:h-[360px]">
-        <div className="absolute inset-0 flex items-center justify-center rotate-[-8deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
-          <img src={imageSrc} alt="Glitch Marker Detection screen" className="mx-auto h-auto w-[108%] select-none" draggable="false" loading="lazy" decoding="async" />
+      <div className="mx-auto mt-4 flex h-[360px] w-full max-w-[320px] items-center justify-center md:mt-0 md:h-[440px]">
+        <div className="flex items-center justify-center rotate-[-8deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
+          <img src={imageSrc} alt="Glitch Marker Detection screen" className="mx-auto h-full w-auto max-w-none scale-[1.08] select-none" draggable="false" loading="lazy" decoding="async" />
         </div>
       </div>
     )
@@ -66,18 +66,18 @@ function ModulePreview({ variant }) {
 
   if (variant === 'defend') {
     return (
-      <div className="relative mx-auto h-[320px] w-full max-w-[300px] md:h-[360px]">
-        <div className="absolute inset-0 flex items-center justify-center rotate-[8deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
-          <img src={imageSrc} alt="Department Defense System screen" className="mx-auto h-auto w-[104%] select-none" draggable="false" loading="lazy" decoding="async" />
+      <div className="mx-auto mt-4 flex h-[360px] w-full max-w-[320px] items-center justify-center md:mt-0 md:h-[440px]">
+        <div className="flex items-center justify-center rotate-[8deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
+          <img src={imageSrc} alt="Department Defense System screen" className="mx-auto h-full w-auto max-w-none scale-[1.04] select-none" draggable="false" loading="lazy" decoding="async" />
         </div>
       </div>
     )
   }
 
   return (
-    <div className="relative mx-auto h-[320px] w-full max-w-[300px] md:h-[360px]">
-      <div className="absolute inset-0 flex items-center justify-center rotate-[-10deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
-        <img src={imageSrc} alt="Report simulation screen" className="mx-auto h-auto w-[96%] select-none" draggable="false" loading="lazy" decoding="async" />
+    <div className="mx-auto mt-4 flex h-[360px] w-full max-w-[320px] items-center justify-center md:mt-0 md:h-[440px]">
+      <div className="flex items-center justify-center rotate-[-10deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
+        <img src={imageSrc} alt="Report simulation screen" className="mx-auto h-full w-auto max-w-none scale-[0.96] select-none" draggable="false" loading="lazy" decoding="async" />
       </div>
     </div>
   )
@@ -500,7 +500,7 @@ function HomePage() {
                 transition={{ duration: 0.35 }}
                 className="overflow-hidden rounded-[30px] border border-white/10 bg-[#0c1220] px-6 py-8 shadow-[0_30px_80px_rgba(0,0,0,0.35)] md:px-10 md:py-10"
               >
-                <div className={`grid items-center gap-4 lg:grid-cols-2 lg:gap-5 ${module.reverse ? 'lg:[&>*:first-child]:order-2 lg:[&>*:last-child]:order-1' : ''}`}>
+                <div className={`grid items-center gap-6 lg:grid-cols-2 lg:gap-8 ${module.reverse ? 'lg:[&>*:first-child]:order-2 lg:[&>*:last-child]:order-1' : ''}`}>
                   <div className={module.reverse ? 'lg:text-right' : ''}>
                     <div className={`inline-flex p-4 rounded-2xl mb-6 ${module.color === 'red' ? 'bg-red-500/20' : module.color === 'purple' ? 'bg-purple-500/20' : 'bg-pink-500/20'}`}>
                       <Icon className={`w-12 h-12 ${module.color === 'red' ? 'text-red-500' : module.color === 'purple' ? 'text-purple-500' : 'text-pink-500'}`} />
