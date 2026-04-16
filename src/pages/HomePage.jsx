@@ -53,31 +53,13 @@ function ModulePreview({ variant }) {
   }
 
   const imageSrc = sourceMap[variant]
-
-  if (variant === 'analyze') {
-    return (
-      <div className="mx-auto mt-6 h-[280px] w-full max-w-[320px] md:mt-0 md:h-[320px]">
-        <div className="h-full w-full rotate-[-8deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
-          <img src={imageSrc} alt="Glitch Marker Detection screen" className="h-full w-full object-contain select-none" draggable="false" loading="lazy" decoding="async" />
-        </div>
-      </div>
-    )
-  }
-
-  if (variant === 'defend') {
-    return (
-      <div className="mx-auto mt-6 h-[280px] w-full max-w-[320px] md:mt-0 md:h-[320px]">
-        <div className="h-full w-full rotate-[8deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
-          <img src={imageSrc} alt="Department Defense System screen" className="h-full w-full object-contain select-none" draggable="false" loading="lazy" decoding="async" />
-        </div>
-      </div>
-    )
-  }
+  const rotateClass = variant === 'defend' ? 'rotate-[8deg]' : variant === 'analyze' ? 'rotate-[-8deg]' : 'rotate-[-10deg]'
+  const altText = variant === 'defend' ? 'Department Defense System screen' : variant === 'analyze' ? 'Glitch Marker Detection screen' : 'Report simulation screen'
 
   return (
     <div className="mx-auto mt-6 h-[280px] w-full max-w-[320px] md:mt-0 md:h-[320px]">
-      <div className="h-full w-full rotate-[-10deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
-        <img src={imageSrc} alt="Report simulation screen" className="h-full w-full object-contain select-none" draggable="false" loading="lazy" decoding="async" />
+      <div className={`h-full w-full ${rotateClass} drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]`}>
+        <img src={imageSrc} alt={altText} className="h-full w-full object-contain select-none" draggable="false" loading="lazy" decoding="async" />
       </div>
     </div>
   )
