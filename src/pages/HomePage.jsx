@@ -55,7 +55,7 @@ function ModulePreview({ variant }) {
   if (variant === 'analyze') {
     return (
       <div className="mx-auto w-full max-w-[280px] rotate-[-8deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
-        <img src={imageSrc} alt="Glitch Marker Detection screen" className="mx-auto h-auto w-[108%] select-none" draggable="false" />
+        <img src={imageSrc} alt="Glitch Marker Detection screen" className="mx-auto h-auto w-[108%] select-none" draggable="false" loading="lazy" decoding="async" />
       </div>
     )
   }
@@ -63,14 +63,14 @@ function ModulePreview({ variant }) {
   if (variant === 'defend') {
     return (
       <div className="mx-auto w-full max-w-[280px] rotate-[8deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
-        <img src={imageSrc} alt="Department Defense System screen" className="mx-auto h-auto w-[104%] select-none" draggable="false" />
+        <img src={imageSrc} alt="Department Defense System screen" className="mx-auto h-auto w-[104%] select-none" draggable="false" loading="lazy" decoding="async" />
       </div>
     )
   }
 
   return (
     <div className="mx-auto w-full max-w-[280px] rotate-[-10deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
-      <img src={imageSrc} alt="Report simulation screen" className="mx-auto h-auto w-[96%] select-none" draggable="false" />
+      <img src={imageSrc} alt="Report simulation screen" className="mx-auto h-auto w-[96%] select-none" draggable="false" loading="lazy" decoding="async" />
     </div>
   )
 }
@@ -198,7 +198,7 @@ function HomePage() {
             </button>
             <Button
               onClick={() => document.getElementById('cta')?.scrollIntoView({ behavior: 'smooth' })}
-              className="text-sm px-6 py-2"
+              className="text-xs px-4 py-1.5"
             >
               Get Started
             </Button>
@@ -206,7 +206,7 @@ function HomePage() {
 
           <Button
             onClick={() => document.getElementById('cta')?.scrollIntoView({ behavior: 'smooth' })}
-            className="md:hidden text-sm px-4 py-2"
+            className="md:hidden text-xs px-3 py-1.5"
           >
             Login
           </Button>
@@ -280,7 +280,7 @@ function HomePage() {
           >
             <Button
               onClick={() => document.getElementById('cta')?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-8 py-6 text-base font-medium group"
+              className="px-6 py-4 text-sm font-medium group"
             >
               Get Started
               <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
