@@ -204,12 +204,21 @@ function HomePage() {
             </Button>
           </div>
 
-          <Button
-            onClick={() => document.getElementById('cta')?.scrollIntoView({ behavior: 'smooth' })}
-            className="md:hidden text-xs px-3 py-1.5"
-          >
-            Login
-          </Button>
+          <div className="md:hidden flex items-center gap-2 text-xs">
+            <button
+              onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+              className="text-gray-400 hover:text-pink-500 transition-colors"
+            >
+              Features
+            </button>
+            <span className="text-gray-600">•</span>
+            <button
+              onClick={() => document.getElementById('modules')?.scrollIntoView({ behavior: 'smooth' })}
+              className="text-gray-400 hover:text-pink-500 transition-colors"
+            >
+              Modules
+            </button>
+          </div>
         </div>
       </nav>
 
