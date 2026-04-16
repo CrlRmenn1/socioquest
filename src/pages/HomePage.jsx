@@ -56,23 +56,29 @@ function ModulePreview({ variant }) {
 
   if (variant === 'analyze') {
     return (
-      <div className="mx-auto w-full max-w-[280px] rotate-[-8deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
-        <img src={imageSrc} alt="Glitch Marker Detection screen" className="mx-auto h-auto w-[108%] select-none" draggable="false" loading="lazy" decoding="async" />
+      <div className="relative mx-auto h-[320px] w-full max-w-[300px] md:h-[360px]">
+        <div className="absolute inset-0 flex items-center justify-center rotate-[-8deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
+          <img src={imageSrc} alt="Glitch Marker Detection screen" className="mx-auto h-auto w-[108%] select-none" draggable="false" loading="lazy" decoding="async" />
+        </div>
       </div>
     )
   }
 
   if (variant === 'defend') {
     return (
-      <div className="mx-auto w-full max-w-[280px] rotate-[8deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
-        <img src={imageSrc} alt="Department Defense System screen" className="mx-auto h-auto w-[104%] select-none" draggable="false" loading="lazy" decoding="async" />
+      <div className="relative mx-auto h-[320px] w-full max-w-[300px] md:h-[360px]">
+        <div className="absolute inset-0 flex items-center justify-center rotate-[8deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
+          <img src={imageSrc} alt="Department Defense System screen" className="mx-auto h-auto w-[104%] select-none" draggable="false" loading="lazy" decoding="async" />
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="mx-auto w-full max-w-[280px] rotate-[-10deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
-      <img src={imageSrc} alt="Report simulation screen" className="mx-auto h-auto w-[96%] select-none" draggable="false" loading="lazy" decoding="async" />
+    <div className="relative mx-auto h-[320px] w-full max-w-[300px] md:h-[360px]">
+      <div className="absolute inset-0 flex items-center justify-center rotate-[-10deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
+        <img src={imageSrc} alt="Report simulation screen" className="mx-auto h-auto w-[96%] select-none" draggable="false" loading="lazy" decoding="async" />
+      </div>
     </div>
   )
 }
