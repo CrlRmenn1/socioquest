@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import {
   Shield,
   Lock,
@@ -69,13 +69,6 @@ function HomePage() {
   const [activeFeature, setActiveFeature] = useState(0)
   const [activeModule, setActiveModule] = useState(0)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveModule((prev) => (prev + 1) % 3)
-    }, 7000)
-    return () => clearInterval(interval)
-  }, [])
 
   const features = [
     {
