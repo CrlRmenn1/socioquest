@@ -56,9 +56,9 @@ function ModulePreview({ variant }) {
 
   if (variant === 'analyze') {
     return (
-      <div className="mx-auto mt-4 flex h-[360px] w-full max-w-[320px] items-center justify-center md:mt-0 md:h-[440px]">
-        <div className="flex items-center justify-center rotate-[-8deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
-          <img src={imageSrc} alt="Glitch Marker Detection screen" className="mx-auto h-full w-auto max-w-none scale-[1.08] select-none" draggable="false" loading="lazy" decoding="async" />
+      <div className="mx-auto mt-6 h-[280px] w-full max-w-[320px] md:mt-0 md:h-[320px]">
+        <div className="h-full w-full rotate-[-8deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
+          <img src={imageSrc} alt="Glitch Marker Detection screen" className="h-full w-full object-contain select-none" draggable="false" loading="lazy" decoding="async" />
         </div>
       </div>
     )
@@ -66,18 +66,18 @@ function ModulePreview({ variant }) {
 
   if (variant === 'defend') {
     return (
-      <div className="mx-auto mt-4 flex h-[360px] w-full max-w-[320px] items-center justify-center md:mt-0 md:h-[440px]">
-        <div className="flex items-center justify-center rotate-[8deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
-          <img src={imageSrc} alt="Department Defense System screen" className="mx-auto h-full w-auto max-w-none scale-[1.04] select-none" draggable="false" loading="lazy" decoding="async" />
+      <div className="mx-auto mt-6 h-[280px] w-full max-w-[320px] md:mt-0 md:h-[320px]">
+        <div className="h-full w-full rotate-[8deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
+          <img src={imageSrc} alt="Department Defense System screen" className="h-full w-full object-contain select-none" draggable="false" loading="lazy" decoding="async" />
         </div>
       </div>
     )
   }
 
   return (
-    <div className="mx-auto mt-4 flex h-[360px] w-full max-w-[320px] items-center justify-center md:mt-0 md:h-[440px]">
-      <div className="flex items-center justify-center rotate-[-10deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
-        <img src={imageSrc} alt="Report simulation screen" className="mx-auto h-full w-auto max-w-none scale-[0.96] select-none" draggable="false" loading="lazy" decoding="async" />
+    <div className="mx-auto mt-6 h-[280px] w-full max-w-[320px] md:mt-0 md:h-[320px]">
+      <div className="h-full w-full rotate-[-10deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
+        <img src={imageSrc} alt="Report simulation screen" className="h-full w-full object-contain select-none" draggable="false" loading="lazy" decoding="async" />
       </div>
     </div>
   )
