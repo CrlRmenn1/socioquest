@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Shield,
   Lock,
@@ -23,6 +23,8 @@ import {
   Clock,
   Download,
   HelpCircle,
+  Menu,
+  X,
 } from 'lucide-react'
 import { motion } from 'motion/react'
 import detectModel from '../assets/detect_upscayl.png'
@@ -78,6 +80,14 @@ function ModulePreview({ variant }) {
 function HomePage() {
   const [activeFeature, setActiveFeature] = useState(0)
   const [activeModule, setActiveModule] = useState(0)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveModule((prev) => (prev + 1) % 3)
+    }, 7000)
+    return () => clearInterval(interval)
+  }, [])
 
   const features = [
     {
@@ -204,22 +214,68 @@ function HomePage() {
             </Button>
           </div>
 
-          <div className="md:hidden flex items-center gap-2 text-xs">
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden text-gray-400 hover:text-pink-500 transition-colors"
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="md:hidden absolute top-full left-0 right-0 bg-black/95 border-b border-gray-900 py-4 px-6 space-y-4"
+          >
             <button
-              onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-              className="text-gray-400 hover:text-pink-500 transition-colors"
+              onClick={() => {
+                document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })
+                setMobileMenuOpen(false)
+              }}
+              className="block w-full text-left text-sm text-gray-400 hover:text-pink-500 transition-colors"
             >
               Features
             </button>
-            <span className="text-gray-600">•</span>
             <button
-              onClick={() => document.getElementById('modules')?.scrollIntoView({ behavior: 'smooth' })}
-              className="text-gray-400 hover:text-pink-500 transition-colors"
+              onClick={() => {
+                document.getElementById('modules')?.scrollIntoView({ behavior: 'smooth' })
+                setMobileMenuOpen(false)
+              }}
+              className="block w-full text-left text-sm text-gray-400 hover:text-pink-500 transition-colors"
             >
               Modules
             </button>
-          </div>
-        </div>
+            <button
+              onClick={() => {
+                document.getElementById('included')?.scrollIntoView({ behavior: 'smooth' })
+                setMobileMenuOpen(false)
+              }}
+              className="block w-full text-left text-sm text-gray-400 hover:text-pink-500 transition-colors"
+            >
+              What's Included
+            </button>
+            <button
+              onClick={() => {
+                document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' })
+                setMobileMenuOpen(false)
+              }}
+              className="block w-full text-left text-sm text-gray-400 hover:text-pink-500 transition-colors"
+            >
+              FAQ
+            </button>
+            <Button
+              onClick={() => {
+                document.getElementById('cta')?.scrollIntoView({ behavior: 'smooth' })
+                setMobileMenuOpen(false)
+              }}
+              className="w-full text-xs px-4 py-1.5 mt-4"
+            >
+              Get Started
+            </Button>
+          </motion.div>
+        )}
       </nav>
 
       <section className="relative min-h-screen flex flex-col items-center justify-center px-6 py-12 overflow-hidden pt-20">
