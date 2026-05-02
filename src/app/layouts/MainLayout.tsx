@@ -72,22 +72,24 @@ export default function MainLayout() {
 
       {/* Bottom Navigation */}
       <nav className="sticky bottom-4 z-40 px-4">
-        <div className="mx-auto flex max-w-3xl items-center justify-between rounded-3xl border border-white/10 bg-slate-950/70 px-3 py-3 shadow-[0_20px_60px_-40px_rgba(0,0,0,0.6)] backdrop-blur-xl">
+        <div className="mx-auto flex max-w-3xl items-center justify-evenly rounded-3xl border border-white/10 bg-slate-950/70 px-3 py-3 shadow-[0_20px_60px_-40px_rgba(0,0,0,0.6)] backdrop-blur-xl">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
             return (
               <button
                 key={item.path}
+                type="button"
                 onClick={() => navigate(item.path)}
-                className={`flex flex-col items-center gap-1 rounded-3xl px-3 py-2 transition-all ${
+                aria-label={item.label}
+                title={item.label}
+                className={`grid h-11 w-11 place-items-center rounded-2xl transition-all ${
                   isActive
-                    ? 'bg-white/10 text-pink-400'
-                    : 'text-gray-400 hover:text-white'
+                    ? 'bg-white/10 text-pink-400 shadow-inner shadow-white/5'
+                    : 'text-gray-400 hover:text-white hover:bg-white/5'
                 }`}
               >
                 <Icon className="w-5 h-5" />
-                <span className="text-[11px] uppercase tracking-[0.2em]">{item.label}</span>
               </button>
             );
           })}
