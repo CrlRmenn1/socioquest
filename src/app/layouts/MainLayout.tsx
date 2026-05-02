@@ -38,7 +38,7 @@ export default function MainLayout() {
     <div className="min-h-screen bg-black text-white flex flex-col">
       {/* Header */}
       <header className="sticky top-4 z-50 px-4">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between rounded-3xl border border-white/10 bg-slate-950/70 px-4 shadow-[0_20px_60px_-40px_rgba(0,0,0,0.6)] backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between rounded-3xl border border-white/10 bg-[#111726]/85 px-4 shadow-[0_20px_60px_-40px_rgba(0,0,0,0.6)] backdrop-blur-xl">
           <div className="flex items-center gap-3">
             <div className="grid h-11 w-11 place-items-center rounded-2xl bg-white/10">
               <Shield className="w-5 h-5 text-pink-400" />
@@ -72,7 +72,7 @@ export default function MainLayout() {
 
       {/* Bottom Navigation */}
       <nav className="sticky bottom-4 z-40 px-4">
-        <div className="mx-auto flex max-w-3xl items-center justify-evenly rounded-3xl border border-white/10 bg-slate-950/70 px-3 py-3 shadow-[0_20px_60px_-40px_rgba(0,0,0,0.6)] backdrop-blur-xl">
+        <div className="mx-auto flex max-w-3xl items-center justify-evenly rounded-3xl border border-white/10 bg-[#111726]/85 px-3 py-3 shadow-[0_20px_60px_-40px_rgba(0,0,0,0.6)] backdrop-blur-xl">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
@@ -85,7 +85,7 @@ export default function MainLayout() {
                 title={item.label}
                 className={`grid h-11 w-11 place-items-center rounded-2xl transition-all ${
                   isActive
-                    ? 'bg-white/10 text-pink-400 shadow-inner shadow-white/5'
+                    ? 'bg-white/10 text-pink-400'
                     : 'text-gray-400 hover:text-white hover:bg-white/5'
                 }`}
               >
