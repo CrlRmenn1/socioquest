@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router'
 import {
   Shield,
   Lock,
@@ -30,6 +31,7 @@ import { motion } from 'motion/react'
 import detectModel from '../assets/detect_upscayl.png'
 import analyzeModel from '../assets/analyze_upscayl.png'
 import defendModel from '../assets/defend_upscay.png'
+import phonesMockup from '../assets/Untitled@1-1920x957_upscayl_5x_upscayl-standard-4x.png'
 
 function Button({ children, className = '', variant = 'default', ...props }) {
   const baseClass = 'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50'
@@ -66,9 +68,11 @@ function ModulePreview({ variant }) {
 }
 
 function HomePage() {
+  const navigate = useNavigate()
   const [activeFeature, setActiveFeature] = useState(0)
   const [activeModule, setActiveModule] = useState(0)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [openFaqIndex, setOpenFaqIndex] = useState(0)
 
   const features = [
     {
@@ -148,6 +152,33 @@ function HomePage() {
     { value: '100%', label: 'Gamified Learning' },
   ]
 
+  const faqItems = [
+    {
+      q: 'What types of attacks does SOCIOQUEST simulate?',
+      a: 'SOCIOQUEST simulates email phishing, SMS scams, voice call impersonation, and multi-channel social engineering attacks. Our AI-powered engine creates realistic scenarios that mirror actual threats your organization might face.',
+    },
+    {
+      q: 'How does the department-based system work?',
+      a: 'Each user is assigned to a specific department and can only repair or strengthen their own department defenses. This creates focused accountability and allows teams to own their security posture.',
+    },
+    {
+      q: 'Is user data kept private and secure?',
+      a: 'Yes. SOCIOQUEST uses anonymous identifiers and secure storage practices to keep personal information confidential.',
+    },
+    {
+      q: 'Can I customize the difficulty of simulations?',
+      a: 'Absolutely. Simulation difficulty, attack types, and deployment schedules can be scaled to meet your team’s training needs.',
+    },
+    {
+      q: 'What’s the difference between admin and user access?',
+      a: 'Admins manage simulations and analytics while users focus on training modules, quizzes, and department defense actions.',
+    },
+    {
+      q: 'How does the point and leveling system work?',
+      a: 'Users earn points for identifying threats and completing challenges. Points unlock levels and help teams improve their resilience over time.',
+    },
+  ]
+
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       <nav className="fixed top-0 left-0 right-0 bg-black/80 backdrop-blur-md border-b border-gray-900 z-50">
@@ -188,7 +219,7 @@ function HomePage() {
               FAQ
             </button>
             <Button
-              onClick={() => document.getElementById('cta')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => navigate('/login')}
               className="text-xs px-4 py-1.5"
             >
               Get Started
@@ -248,7 +279,7 @@ function HomePage() {
             </button>
             <Button
               onClick={() => {
-                document.getElementById('cta')?.scrollIntoView({ behavior: 'smooth' })
+                navigate('/login')
                 setMobileMenuOpen(false)
               }}
               className="w-full text-xs px-4 py-1.5 mt-4"
@@ -259,7 +290,7 @@ function HomePage() {
         )}
       </nav>
 
-      <section className="relative min-h-screen flex flex-col items-center justify-center px-6 py-12 overflow-hidden pt-20">
+      <section className="relative min-h-screen flex items-center justify-center px-6 py-12 overflow-hidden pt-20">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl animate-pulse" />
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
@@ -272,78 +303,74 @@ function HomePage() {
         <div className="absolute inset-0 opacity-15">
           <div className="absolute inset-0 bg-[linear-gradient(rgba(236,72,153,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(236,72,153,0.08)_1px,transparent_1px)] bg-[size:50px_50px]" />
         </div>
-        <div className="absolute inset-0 overflow-hidden opacity-25">
-          <motion.div
-            animate={{ y: [0, -20, 0], opacity: [0.2, 0.5, 0.2] }}
-            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute top-20 left-10 w-32 h-32 border border-pink-500/30 rounded-lg"
-          />
-          <motion.div
-            animate={{ y: [0, 20, 0], opacity: [0.15, 0.4, 0.15] }}
-            transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-            className="absolute bottom-32 right-20 w-40 h-40 border border-purple-500/20 rounded-full"
-          />
-          <motion.div
-            animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.35, 0.1] }}
-            transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-            className="absolute top-1/2 right-1/4 w-24 h-24 border border-pink-400/20 rounded-lg"
-          />
-        </div>
 
-        <div className="relative w-full max-w-4xl space-y-8 text-center z-10">
+        <div className="relative w-full max-w-7xl z-10 grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left Column: Content */}
           <motion.div
-            initial={{ scale: 0, rotate: -180 }}
-            animate={{ scale: 1, rotate: 0 }}
-            transition={{ duration: 0.8, type: 'spring' }}
-            className="flex justify-center"
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="space-y-6 relative z-20 lg:max-w-xl"
           >
-            <div className="relative">
-              <Shield className="w-24 h-24 text-pink-500" strokeWidth={1.5} />
-              <Lock className="w-10 h-10 text-pink-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+            <div className="space-y-4">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
+                Build Your <span className="text-pink-500">Human Firewall</span>
+              </h1>
+              <p className="text-gray-400 text-base md:text-lg leading-relaxed max-w-xl">
+                Train your team to detect, analyze, and neutralize phishing threats through AI-powered simulations and gamified learning. Real attacks. Real learning. Real security.
+              </p>
             </div>
-          </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="space-y-4"
-          >
-            <h1 className="text-5xl md:text-6xl font-bold tracking-tight">
-              SOCIO<span className="text-pink-500">QUEST</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-300 font-medium">AI-Driven Behavioral Simulation</p>
-            <p className="text-gray-400 text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
-              The ultimate cyber-resilience framework for social engineering defense. Train your team to detect, analyze, and neutralize phishing threats through gamified simulations.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center pt-4"
-          >
-            <Button
-              onClick={() => document.getElementById('cta')?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-6 py-4 text-sm font-medium group"
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="flex flex-col sm:flex-row gap-4 pt-4"
             >
-              Get Started
-              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
+              <Button
+                onClick={() => navigate('/login')}
+                className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-4 text-base font-medium group rounded-lg"
+              >
+                Get Started
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+              <Button
+                onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+                variant="outline"
+                className="border-pink-500/30 text-pink-500 hover:bg-pink-500/10 px-8 py-4 text-base font-medium rounded-lg"
+              >
+                Learn More
+              </Button>
+            </motion.div>
           </motion.div>
 
+          {/* Right Column: Phone Mockup Behind Text */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1, repeat: Infinity, duration: 2 }}
-            className="pt-12"
+            transition={{ duration: 1, delay: 0.2 }}
+            className="hidden lg:flex absolute inset-y-0 right-0 w-[60%] items-center justify-end -z-10 lg:z-0"
           >
-            <ChevronDown className="w-6 h-6 text-gray-600 mx-auto animate-bounce" />
+            <img
+              src={phonesMockup}
+              alt="SOCIOQUEST mobile mockup"
+              className="h-[560px] w-auto object-contain"
+              style={{ imageRendering: 'crisp-edges', transform: 'translateX(20%)' }}
+            />
           </motion.div>
         </div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, repeat: Infinity, duration: 2 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+        >
+          <ChevronDown className="w-6 h-6 text-gray-600 animate-bounce" />
+        </motion.div>
       </section>
 
+      {/* Stats Section - Keep this but move content */}
       <section className="py-16 px-6 bg-gradient-to-b from-black to-gray-950">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -520,53 +547,18 @@ function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <div className="inline-flex items-center gap-2 bg-pink-500/10 border border-pink-500/30 rounded-full px-4 py-2 mb-4">
-              <Download className="w-4 h-4 text-pink-500" />
-              <span className="text-pink-500 text-sm font-medium">COMPLETE PACKAGE</span>
-            </div>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               What's <span className="text-pink-500">Included</span>
             </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">A comprehensive cyber-resilience training platform with everything you need</p>
+            <p className="text-gray-400 max-w-2xl mx-auto">A focused training platform for users to build real-world security instincts.</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="bg-gradient-to-br from-pink-500/5 to-purple-500/5 border border-pink-500/30 rounded-2xl p-8"
-            >
-              <div className="flex items-center gap-3 mb-6">
-                <div className="bg-pink-500/20 p-3 rounded-lg">
-                  <Settings className="w-8 h-8 text-pink-500" />
-                </div>
-                <h3 className="text-2xl font-bold">Admin Control Panel</h3>
-              </div>
-              <ul className="space-y-3">
-                {[
-                  'Full user management system',
-                  'Create and deploy phishing simulations',
-                  'Monitor all department health metrics',
-                  'Track organization-wide statistics',
-                  'Generate detailed performance reports',
-                  'Customize simulation difficulty levels',
-                  'Manage resilience point economy',
-                  'View real-time threat response data',
-                ].map((item, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-pink-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-300 text-sm">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-
+          <div className="grid md:grid-cols-1 gap-8 mb-12">
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-gradient-to-br from-purple-500/5 to-blue-500/5 border border-purple-500/30 rounded-2xl p-8"
+              className="mx-auto max-w-3xl bg-gradient-to-br from-purple-500/5 to-blue-500/5 border border-purple-500/30 rounded-2xl p-8"
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="bg-purple-500/20 p-3 rounded-lg">
@@ -639,43 +631,31 @@ function HomePage() {
             </h2>
           </motion.div>
 
-          <div className="space-y-4">
-            {[
-              {
-                q: 'What types of attacks does SOCIOQUEST simulate?',
-                a: 'SOCIOQUEST simulates email phishing, SMS scams, voice call impersonation, and multi-channel social engineering attacks. Our AI-powered engine creates realistic scenarios that mirror actual threats your organization might face.',
-              },
-              {
-                q: 'How does the department-based system work?',
-                a: "Each user is assigned to a specific department and can only repair/strengthen their own department's defenses. This creates focused accountability and allows admins to track which teams are most vulnerable to attacks.",
-              },
-              {
-                q: 'Is user data kept private and secure?',
-                a: 'Yes. SOCIOQUEST uses anonymous user IDs to protect personal information. All data is securely stored with enterprise-grade encryption, and we follow strict privacy-first design principles.',
-              },
-              {
-                q: 'Can I customize the difficulty of simulations?',
-                a: "Absolutely. Admins have full control over simulation difficulty, attack types, and deployment schedules. You can scale complexity based on your team's current skill level and training goals.",
-              },
-              {
-                q: "What's the difference between admin and user access?",
-                a: 'Admins can create simulations, manage users, view organization-wide analytics, and monitor all departments. Users access training modules, participate in simulations, complete quizzes, repair their department, and track personal progress.',
-              },
-              {
-                q: 'How does the point and leveling system work?',
-                a: 'Users earn points by correctly identifying threats, completing quizzes, and making smart defense decisions. Points unlock new levels and can be spent as resilience tokens to repair department defenses. Incorrect actions result in point penalties.',
-              },
-            ].map((faq, index) => (
+          <div className="space-y-3">
+            {faqItems.map((faq, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-gray-900 border border-gray-800 rounded-xl p-6 hover:border-pink-500/30 transition-all"
+                transition={{ delay: index * 0.07 }}
+                className="overflow-hidden rounded-3xl border border-gray-800 bg-gray-900 shadow-sm shadow-black/20"
               >
-                <h3 className="font-bold text-lg mb-3 text-pink-500">{faq.q}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{faq.a}</p>
+                <button
+                  type="button"
+                  onClick={() => setOpenFaqIndex(openFaqIndex === index ? null : index)}
+                  className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left text-gray-100 hover:bg-gray-800 transition-colors"
+                >
+                  <span className="font-semibold">{faq.q}</span>
+                  <ChevronDown
+                    className={`w-5 h-5 text-pink-500 transition-transform ${openFaqIndex === index ? 'rotate-180' : ''}`}
+                  />
+                </button>
+                <div className={`overflow-hidden transition-[max-height] duration-300 ${openFaqIndex === index ? 'max-h-[500px]' : 'max-h-0'}`}>
+                  <div className="px-6 pb-5 text-gray-400 text-sm leading-relaxed">
+                    {faq.a}
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -688,8 +668,8 @@ function HomePage() {
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Build Your Human Firewall?</h2>
             <p className="text-gray-300 mb-8 max-w-2xl mx-auto">Join the next generation of cyber-aware organizations. Start training your team today.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button className="px-8 py-6 text-base font-medium">Create Account</Button>
-              <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 px-8 py-6 text-base font-medium">
+              <Button onClick={() => navigate('/register')} className="px-8 py-6 text-base font-medium">Create Account</Button>
+              <Button onClick={() => navigate('/login')} variant="outline" className="border-white/30 text-white hover:bg-white/10 px-8 py-6 text-base font-medium">
                 Sign In
               </Button>
             </div>
