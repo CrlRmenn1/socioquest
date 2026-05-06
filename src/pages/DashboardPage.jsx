@@ -1,17 +1,8 @@
 import { AlertTriangle, Shield } from 'lucide-react'
-import { departmentData } from '../../data/siteContent.js'
+import { departmentData } from '../data/siteContent.js'
 
-interface Department {
-  id: number
-  name: string
-  x: number
-  y: number
-  safety: number
-  tone: string
-}
-
-export default function Dashboard() {
-  const visibleDepartments: Department[] = departmentData
+function DashboardPage() {
+  const visibleDepartments = departmentData
 
   return (
     <div className="dashboard-page">
@@ -75,3 +66,5 @@ export default function Dashboard() {
     </div>
   )
 }
+
+export default DashboardPage
