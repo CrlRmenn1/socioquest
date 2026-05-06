@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { X } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -44,10 +44,18 @@ export default function Dashboard() {
   const [selectedDept, setSelectedDept] = useState<typeof mapLabels[0] | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+    const [pinchDistance, setPinchDistance] = useState(0);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const cleanMap = new URL("../../assets/map_noindicator.png", import.meta.url).href;
 
   if (!user) return null;
+
+  const getDistance = (touches: React.TouchList) => {
+    if (touches.length < 2) return 0;
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  };
 
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
@@ -55,6 +63,21 @@ export default function Dashboard() {
     const newZoom = Math.max(1, Math.min(5, zoom * delta));
     setZoom(newZoom);
   };
+
+  useEffect(() => {
+    const element = mapContainerRef.current;
+    if (!element) return;
+
+    const blockBrowserZoom = (event: WheelEvent) => {
+      event.preventDefault();
+    };
+
+    element.addEventListener("wheel", blockBrowserZoom, { passive: false });
+
+    return () => {
+      element.removeEventListener("wheel", blockBrowserZoom);
+    };
+  }, []);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if ((e.target as HTMLElement).closest("[data-dept-label]")) return;
@@ -78,6 +101,12 @@ export default function Dashboard() {
 
   const handleTouchStart = (e: React.TouchEvent) => {
     if ((e.target as HTMLElement).closest("[data-dept-label]")) return;
+    if (e.touches.length === 2) {
+      setIsDragging(false);
+      setPinchDistance(getDistance(e.touches));
+      return;
+    }
+
     if (e.touches.length === 1) {
       setIsDragging(true);
       setDragStart({ x: e.touches[0].clientX - panX, y: e.touches[0].clientY - panY });
@@ -85,17 +114,30 @@ export default function Dashboard() {
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging || e.touches.length !== 1) return;
-    const newPanX = e.touches[0].clientX - dragStart.x;
-    const newPanY = e.touches[0].clientY - dragStart.y;
-    const containerWidth = mapContainerRef.current?.offsetWidth || 800;
-    const containerHeight = mapContainerRef.current?.offsetHeight || 600;
-    setPanX(clampPan(newPanX, zoom, containerWidth));
-    setPanY(clampPan(newPanY, zoom, containerHeight));
+    if (e.touches.length === 2) {
+      const currentDistance = getDistance(e.touches);
+      if (pinchDistance > 0) {
+        const scale = currentDistance / pinchDistance;
+        const newZoom = Math.max(1, Math.min(5, zoom * scale));
+        setZoom(newZoom);
+      }
+      setPinchDistance(currentDistance);
+      return;
+    }
+
+    if (isDragging && e.touches.length === 1) {
+      const newPanX = e.touches[0].clientX - dragStart.x;
+      const newPanY = e.touches[0].clientY - dragStart.y;
+      const containerWidth = mapContainerRef.current?.offsetWidth || 800;
+      const containerHeight = mapContainerRef.current?.offsetHeight || 600;
+      setPanX(clampPan(newPanX, zoom, containerWidth));
+      setPanY(clampPan(newPanY, zoom, containerHeight));
+    }
   };
 
   const handleTouchEnd = () => {
     setIsDragging(false);
+    setPinchDistance(0);
   };
 
   return (
@@ -113,7 +155,7 @@ export default function Dashboard() {
 
         <div
           ref={mapContainerRef}
-          className="relative flex-1 overflow-hidden bg-[#0a0f18]"
+          className="relative flex-1 overflow-hidden bg-[#0a0f18] touch-none"
           onWheel={handleWheel}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
@@ -125,15 +167,16 @@ export default function Dashboard() {
           style={{ cursor: isDragging ? "grabbing" : "grab" }}
         >
           <div
-            className="origin-center transition-transform duration-75"
+            className="absolute inset-0 origin-center transition-transform duration-75"
             style={{
               transform: `translate(${panX}px, ${panY}px) scale(${zoom})`,
+              transformOrigin: "center center",
             }}
           >
             <img
               src={cleanMap}
               alt="Interactive office floor plan"
-              className="pointer-events-none h-full w-full object-cover"
+              className="pointer-events-none block h-full w-full object-cover"
               draggable={false}
             />
 
@@ -159,15 +202,33 @@ export default function Dashboard() {
                   type="button"
                   onClick={() => setSelectedDept(label)}
                   className="group flex min-w-[140px] items-center gap-2 rounded-2xl border border-pink-400/30 bg-slate-950/80 px-3 py-2 text-left transition-all hover:border-pink-400/60 hover:bg-slate-900/90 hover:shadow-[0_0_24px_rgba(236,72,153,0.25)] sm:min-w-[168px]"
+                  style={{
+                    transform: `scale(${1 / zoom})`,
+                    transformOrigin:
+                      label.anchor === "left"
+                        ? "left center"
+                        : label.anchor === "right"
+                          ? "right center"
+                          : "center center",
+                  }}
                 >
                   <span className="mt-0.5 h-2.5 w-2.5 shrink-0 rounded-full bg-pink-400 shadow-[0_0_18px_rgba(236,72,153,0.8)]" />
-                  <div className="leading-tight">
+                  <div className="min-w-0 flex-1 leading-tight">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white sm:text-[11px]">
                       {label.title}
                     </p>
                     <p className="text-[9px] uppercase tracking-[0.26em] text-slate-300/80 sm:text-[10px]">
                       {label.subtitle}
                     </p>
+                    <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/10">
+                      <div
+                        className="h-full rounded-full transition-all duration-300"
+                        style={{
+                          width: `${label.safety}%`,
+                          backgroundColor: getSafetyColor(label.safety),
+                        }}
+                      />
+                    </div>
                   </div>
                 </button>
               </div>
@@ -175,7 +236,7 @@ export default function Dashboard() {
           </div>
 
           <div className="pointer-events-none absolute bottom-4 left-4 rounded-2xl border border-white/10 bg-black/55 px-3 py-2 text-xs text-slate-200 backdrop-blur-md">
-            Zoom: {Math.round(zoom * 100)}% • Drag to pan
+            Zoom: {Math.round(zoom * 100)}% • Pinch to zoom • Drag to pan
           </div>
         </div>
       </div>

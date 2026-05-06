@@ -1,22 +1,21 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../contexts/AuthContext";
-import { 
-  Users, 
-  Target, 
-  Calendar, 
-  Activity, 
-  TrendingUp, 
-  Shield,
-  AlertTriangle,
-  CheckCircle2,
-  Settings,
-  Play,
-  Pause
-} from "lucide-react";
-import { Button } from "../components/ui/button";
 import { motion } from "motion/react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
+import {
+  Activity,
+  AlertTriangle,
+  Calendar,
+  CheckCircle2,
+  LogOut,
+  Pause,
+  Play,
+  Settings,
+  Shield,
+  Target,
+  TrendingUp,
+  Users,
+} from "lucide-react";
 
 const departmentStats = [
   { name: "IT Department", users: 24, avgSafety: 85, threats: 12, reports: 18 },
@@ -27,233 +26,191 @@ const departmentStats = [
 ];
 
 const recentActivity = [
-  { user: "User #2847", action: "Completed Level 2 Quiz", time: "5 min ago", type: "success", dept: "Finance" },
-  { user: "User #1923", action: "Reported phishing email", time: "12 min ago", type: "report", dept: "IT Department" },
-  { user: "User #4561", action: "Failed simulation", time: "25 min ago", type: "warning", dept: "HR" },
-  { user: "User #2847", action: "Repaired Finance dept", time: "1 hour ago", type: "repair", dept: "Finance" },
-  { user: "User #3089", action: "Achieved Level 3", time: "2 hours ago", type: "success", dept: "Operations" },
+  { user: "User #2847", action: "Completed Level 2 Quiz", time: "5 min ago", type: "success" },
+  { user: "User #1923", action: "Reported phishing email", time: "12 min ago", type: "report" },
+  { user: "User #4561", action: "Failed simulation", time: "25 min ago", type: "warning" },
+  { user: "User #2847", action: "Repaired Finance dept", time: "1 hour ago", type: "repair" },
+  { user: "User #3089", action: "Achieved Level 3", time: "2 hours ago", type: "success" },
 ];
+
+const getSafetyColor = (safety: number) => {
+  if (safety >= 80) return "#22c55e";
+  if (safety >= 60) return "#eab308";
+  if (safety >= 40) return "#f97316";
+  return "#ef4444";
+};
 
 export default function Admin() {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   const [simulationActive, setSimulationActive] = useState(true);
 
+  if (!user) return null;
+
+  const stats = [
+    { label: "Total Users", value: "109", icon: Users, color: "text-pink-500", bgColor: "bg-pink-500/20" },
+    { label: "Active Sims", value: "3", icon: Target, color: "text-blue-500", bgColor: "bg-blue-500/20" },
+    { label: "Avg Safety", value: "70%", icon: TrendingUp, color: "text-green-500", bgColor: "bg-green-500/20" },
+    { label: "Reports", value: "79", icon: Activity, color: "text-purple-500", bgColor: "bg-purple-500/20" },
+  ];
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
-    <div className="min-h-full bg-gradient-to-b from-gray-950 to-black">
-      <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
-            <p className="text-gray-400 text-sm sm:text-base">
-              Monitor organization-wide security health and manage simulations.
-            </p>
-          </div>
-          <Button
-            onClick={() => {
-              logout();
-              navigate('/login');
-            }}
-            variant="outline"
-            className="rounded-full border border-white/20 bg-white/5 px-5 py-2 text-sm font-semibold text-white transition hover:bg-white/10"
-          >
-            Logout
-          </Button>
-        </div>
-
-        {/* Key Metrics */}
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4 mb-6">
-        <div className="rounded-[2rem] border border-white/10 bg-gray-900/95 p-5">
-          <div className="flex items-center gap-3 text-gray-400 text-xs uppercase tracking-[0.2em]">
-            <Users className="w-4 h-4 text-pink-500" />
-            Total Users
-          </div>
-          <p className="mt-4 text-3xl font-semibold">109</p>
-        </div>
-        <div className="rounded-[2rem] border border-white/10 bg-gray-900/95 p-5">
-          <div className="flex items-center gap-3 text-gray-400 text-xs uppercase tracking-[0.2em]">
-            <Target className="w-4 h-4 text-pink-500" />
-            Active Sims
-          </div>
-          <p className="mt-4 text-3xl font-semibold">3</p>
-        </div>
-        <div className="rounded-[2rem] border border-white/10 bg-gray-900/95 p-5">
-          <div className="flex items-center gap-3 text-gray-400 text-xs uppercase tracking-[0.2em]">
-            <TrendingUp className="w-4 h-4 text-green-500" />
-            Avg Safety
-          </div>
-          <p className="mt-4 text-3xl font-semibold">70%</p>
-        </div>
-        <div className="rounded-[2rem] border border-white/10 bg-gray-900/95 p-5">
-          <div className="flex items-center gap-3 text-gray-400 text-xs uppercase tracking-[0.2em]">
-            <Activity className="w-4 h-4 text-pink-500" />
-            Reports
-          </div>
-          <p className="mt-4 text-3xl font-semibold">79</p>
-        </div>
-      </div>
-
-      {/* Simulation Control */}
-      <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr] mb-6">
-        <div className="rounded-[2rem] border border-white/10 bg-gradient-to-r from-pink-500/10 to-purple-500/10 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.36)]">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-start gap-3">
-              <div className="grid h-14 w-14 place-items-center rounded-3xl bg-pink-500/20">
-                {simulationActive ? (
-                  <Play className="w-5 h-5 text-pink-500" />
-                ) : (
-                  <Pause className="w-5 h-5 text-gray-500" />
-                )}
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold">Simulation Status</h3>
-                <p className="text-sm text-gray-400">
-                  {simulationActive
-                    ? 'Simulations are currently running'
-                    : 'No active simulations'}
-                </p>
-              </div>
+    <div className="min-h-full bg-gradient-to-b from-[#070b12] to-black p-4 sm:p-6">
+      <div className="mx-auto w-full max-w-md">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6 rounded-[2rem] border border-white/10 bg-gradient-to-br from-pink-500/10 to-purple-500/10 p-5 shadow-[0_24px_80px_rgba(0,0,0,0.35)]"
+        >
+          <div className="flex items-center gap-4">
+            <div className="grid h-14 w-14 flex-shrink-0 place-items-center rounded-3xl bg-pink-500/20">
+              <Shield className="h-6 w-6 text-pink-400" />
             </div>
-            <Button
-              onClick={() => setSimulationActive(!simulationActive)}
-              variant="outline"
-              size="sm"
-              className="rounded-full border border-pink-500 text-pink-500 hover:bg-pink-500/10"
-            >
-              {simulationActive ? 'Stop' : 'Start'}
-            </Button>
-          </div>
-
-          <div className="mt-5 grid gap-3 sm:grid-cols-2">
-            <Button className="rounded-3xl bg-pink-500 px-4 py-3 text-sm font-semibold text-white hover:bg-pink-600">
-              <Calendar className="w-4 h-4 mr-2" />
-              Schedule
-            </Button>
-            <Button variant="outline" className="rounded-3xl border border-gray-700 px-4 py-3 text-sm text-white hover:bg-gray-800">
-              <Settings className="w-4 h-4 mr-2" />
-              Configure
-            </Button>
-          </div>
-        </div>
-
-        <div className="rounded-[2rem] border border-white/10 bg-gray-900/95 p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h3 className="text-lg font-semibold">Admin Snapshot</h3>
-              <p className="text-sm text-gray-500">Everything you need at a glance.</p>
-            </div>
-            <div className="rounded-full bg-white/5 px-3 py-1 text-xs text-gray-300">Live</div>
-          </div>
-          <div className="grid gap-3">
-            <div className="rounded-3xl border border-white/10 bg-black/40 p-4">
-              <p className="text-sm text-gray-400">Reports this hour</p>
-              <p className="text-2xl font-semibold">25</p>
-            </div>
-            <div className="rounded-3xl border border-white/10 bg-black/40 p-4">
-              <p className="text-sm text-gray-400">Active alerts</p>
-              <p className="text-2xl font-semibold">4</p>
+            <div className="min-w-0 flex-1">
+              <h2 className="text-lg font-semibold text-white">{user.name}</h2>
+              <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Admin Access</p>
+              <p className="text-sm text-slate-300">{user.department}</p>
             </div>
           </div>
-        </div>
-      </div>
+        </motion.div>
 
-      {/* Tabs */}
-      <Tabs defaultValue="departments" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-2 bg-gray-900">
-          <TabsTrigger value="departments" className="data-[state=active]:bg-pink-500">
-            Departments
-          </TabsTrigger>
-          <TabsTrigger value="activity" className="data-[state=active]:bg-pink-500">
-            Activity
-          </TabsTrigger>
-        </TabsList>
-
-        {/* Departments Tab */}
-        <TabsContent value="departments" className="space-y-3">
-          {departmentStats.map((dept, index) => (
+        <div className="mb-6 grid grid-cols-2 gap-3">
+          {stats.map((stat, index) => (
             <motion.div
-              key={dept.name}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
-              className="bg-gray-900 border border-gray-800 rounded-lg p-4"
+              key={stat.label}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: index * 0.08 }}
+              className="rounded-[1.75rem] border border-white/10 bg-slate-950/60 p-4 backdrop-blur-sm"
             >
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-start gap-3">
-                  <Shield className={`w-5 h-5 ${
-                    dept.avgSafety >= 80 ? 'text-green-500' :
-                    dept.avgSafety >= 60 ? 'text-yellow-500' :
-                    dept.avgSafety >= 40 ? 'text-orange-500' :
-                    'text-red-500'
-                  }`} />
+              <div className={`mb-3 inline-flex h-10 w-10 items-center justify-center rounded-2xl ${stat.bgColor}`}>
+                <stat.icon className={`h-5 w-5 ${stat.color}`} />
+              </div>
+              <p className="text-3xl font-bold text-white">{stat.value}</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{stat.label}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="mb-6 rounded-[2rem] border border-white/10 bg-slate-950/60 p-5 backdrop-blur-sm"
+        >
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">Simulation Control</h3>
+              <p className="mt-1 text-xs text-slate-500">Manage live training activity</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setSimulationActive(!simulationActive)}
+              className="inline-flex items-center gap-2 rounded-full border border-pink-500/30 bg-pink-500/10 px-3 py-1.5 text-xs font-semibold text-pink-300"
+            >
+              {simulationActive ? <Play className="h-3.5 w-3.5" /> : <Pause className="h-3.5 w-3.5" />}
+              {simulationActive ? "Running" : "Paused"}
+            </button>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              className="rounded-3xl bg-pink-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-pink-600"
+            >
+              <Calendar className="mr-2 inline h-4 w-4" />
+              Schedule
+            </button>
+            <button
+              type="button"
+              className="rounded-3xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+            >
+              <Settings className="mr-2 inline h-4 w-4" />
+              Configure
+            </button>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
+          className="mb-6 rounded-[2rem] border border-white/10 bg-slate-950/60 p-5 backdrop-blur-sm"
+        >
+          <h3 className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-white">Department Health</h3>
+          <div className="space-y-3">
+            {departmentStats.map((dept) => (
+              <div key={dept.name} className="rounded-2xl border border-white/10 bg-white/5 p-3">
+                <div className="mb-2 flex items-center justify-between gap-3">
                   <div>
-                    <h3 className="font-medium">{dept.name}</h3>
-                    <p className="text-xs text-gray-500">{dept.users} users</p>
+                    <p className="text-sm font-medium text-white">{dept.name}</p>
+                    <p className="text-xs text-slate-500">{dept.users} users • {dept.threats} threats</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-lg font-bold" style={{ color: getSafetyColor(dept.avgSafety) }}>
+                      {dept.avgSafety}%
+                    </p>
+                    <p className="text-[10px] uppercase tracking-[0.22em] text-slate-500">
+                      {dept.avgSafety >= 80 ? "Secure" : dept.avgSafety >= 60 ? "Stable" : dept.avgSafety >= 40 ? "Warning" : "Critical"}
+                    </p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className={`text-lg font-bold ${
-                    dept.avgSafety >= 80 ? 'text-green-500' :
-                    dept.avgSafety >= 60 ? 'text-yellow-500' :
-                    dept.avgSafety >= 40 ? 'text-orange-500' :
-                    'text-red-500'
-                  }`}>
-                    {dept.avgSafety}%
-                  </p>
-                  <p className="text-xs text-gray-500">Avg Safety</p>
+                <div className="h-2.5 overflow-hidden rounded-full bg-slate-800">
+                  <div
+                    className="h-full rounded-full transition-all duration-300"
+                    style={{ width: `${dept.avgSafety}%`, backgroundColor: getSafetyColor(dept.avgSafety) }}
+                  />
+                </div>
+                <div className="mt-2 flex justify-between text-[11px] text-slate-500">
+                  <span>Threats: {dept.threats}</span>
+                  <span>Reports: {dept.reports}</span>
                 </div>
               </div>
+            ))}
+          </div>
+        </motion.div>
 
-              <div className="grid grid-cols-2 gap-3 pt-3 border-t border-gray-800">
-                <div className="text-center">
-                  <p className="text-xs text-gray-500 mb-1">Threats Sent</p>
-                  <p className="font-medium">{dept.threats}</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-xs text-gray-500 mb-1">Reports</p>
-                  <p className="font-medium text-pink-500">{dept.reports}</p>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="mb-6 rounded-[2rem] border border-white/10 bg-slate-950/60 p-5 backdrop-blur-sm"
+        >
+          <h3 className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-white">Recent Activity</h3>
+          <div className="space-y-3">
+            {recentActivity.map((activity, index) => (
+              <div key={index} className="rounded-2xl border border-slate-700/50 bg-slate-800/20 p-3">
+                <div className="flex items-start gap-3">
+                  <div className={`mt-0.5 ${activity.type === "success" ? "text-green-500" : activity.type === "warning" ? "text-yellow-500" : activity.type === "report" ? "text-blue-500" : "text-pink-500"}`}>
+                    {activity.type === "success" ? <CheckCircle2 className="h-5 w-5" /> : activity.type === "warning" ? <AlertTriangle className="h-5 w-5" /> : activity.type === "report" ? <Shield className="h-5 w-5" /> : <Activity className="h-5 w-5" />}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-white">{activity.user}</p>
+                    <p className="text-xs text-slate-400">{activity.action}</p>
+                  </div>
+                  <span className="flex-shrink-0 text-xs text-slate-500">{activity.time}</span>
                 </div>
               </div>
-            </motion.div>
-          ))}
-        </TabsContent>
+            ))}
+          </div>
+        </motion.div>
 
-        {/* Activity Tab */}
-        <TabsContent value="activity" className="space-y-2">
-          {recentActivity.map((activity, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.05 }}
-              className="bg-gray-900 border border-gray-800 rounded-lg p-4"
-            >
-              <div className="flex items-start gap-3">
-                <div className={`mt-0.5 ${
-                  activity.type === 'success' ? 'text-green-500' :
-                  activity.type === 'warning' ? 'text-yellow-500' :
-                  activity.type === 'report' ? 'text-blue-500' :
-                  'text-pink-500'
-                }`}>
-                  {activity.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> :
-                   activity.type === 'warning' ? <AlertTriangle className="w-5 h-5" /> :
-                   activity.type === 'report' ? <Shield className="w-5 h-5" /> :
-                   <Activity className="w-5 h-5" />
-                  }
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium">{activity.user}</p>
-                  <p className="text-xs text-gray-400">{activity.action}</p>
-                </div>
-                <span className="text-xs text-gray-500 flex-shrink-0">
-                  {activity.time}
-                </span>
-              </div>
-            </motion.div>
-          ))}
-        </TabsContent>
-      </Tabs>
+        <motion.button
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.55 }}
+          type="button"
+          onClick={handleLogout}
+          className="flex w-full items-center justify-center gap-2 rounded-[1.75rem] border border-white/10 bg-gradient-to-r from-red-500/15 to-orange-500/15 py-4 font-semibold text-white transition hover:border-red-400/30 hover:from-red-500/25 hover:to-orange-500/25"
+        >
+          <LogOut className="h-4 w-4" />
+          Logout
+        </motion.button>
       </div>
     </div>
   );
