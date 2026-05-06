@@ -53,7 +53,7 @@ export default function Repair() {
   };
 
   return (
-    <div className="min-h-full bg-gradient-to-b from-gray-950 to-black py-6">
+    <div className="min-h-full bg-gradient-to-b from-gray-950 to-black p-6">
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold mb-2">Repair Department</h1>
