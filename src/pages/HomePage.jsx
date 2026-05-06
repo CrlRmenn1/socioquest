@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react'
+﻿import { useState } from 'react'
 import {
   Shield,
   Lock,
@@ -10,6 +10,7 @@ import {
   Sparkles,
   ArrowRight,
   ChevronDown,
+  Crosshair,
   BarChart3,
   FileText,
   Settings,
@@ -22,20 +23,13 @@ import {
   Clock,
   Download,
   HelpCircle,
-  LucideIcon,
 } from 'lucide-react'
 import { motion } from 'motion/react'
-import detectModel from '../../assets/detect_upscayl.png'
-import analyzeModel from '../../assets/analyze_upscayl.png'
-import defendModel from '../../assets/defend_upscay.png'
+import detectModel from '../assets/detect_upscayl.png'
+import analyzeModel from '../assets/analyze_upscayl.png'
+import defendModel from '../assets/defend_upscay.png'
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: ReactNode
-  className?: string
-  variant?: 'default' | 'outline'
-}
-
-function Button({ children, className = '', variant = 'default', ...props }: ButtonProps) {
+function Button({ children, className = '', variant = 'default', ...props }) {
   const baseClass = 'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50'
   const variantClass =
     variant === 'outline'
@@ -49,12 +43,8 @@ function Button({ children, className = '', variant = 'default', ...props }: But
   )
 }
 
-interface ModulePreviewProps {
-  variant: 'detect' | 'analyze' | 'defend'
-}
-
-function ModulePreview({ variant }: ModulePreviewProps) {
-  const sourceMap: Record<'detect' | 'analyze' | 'defend', string> = {
+function ModulePreview({ variant }) {
+  const sourceMap = {
     detect: detectModel,
     analyze: analyzeModel,
     defend: defendModel,
@@ -65,7 +55,7 @@ function ModulePreview({ variant }: ModulePreviewProps) {
   if (variant === 'analyze') {
     return (
       <div className="mx-auto w-full max-w-[280px] rotate-[-8deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
-        <img src={imageSrc} alt="Glitch Marker Detection screen" className="mx-auto h-auto w-[108%] select-none" draggable={false} />
+        <img src={imageSrc} alt="Glitch Marker Detection screen" className="mx-auto h-auto w-[108%] select-none" draggable="false" />
       </div>
     )
   }
@@ -73,53 +63,23 @@ function ModulePreview({ variant }: ModulePreviewProps) {
   if (variant === 'defend') {
     return (
       <div className="mx-auto w-full max-w-[280px] rotate-[8deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
-        <img src={imageSrc} alt="Department Defense System screen" className="mx-auto h-auto w-[104%] select-none" draggable={false} />
+        <img src={imageSrc} alt="Department Defense System screen" className="mx-auto h-auto w-[104%] select-none" draggable="false" />
       </div>
     )
   }
 
   return (
     <div className="mx-auto w-full max-w-[280px] rotate-[-10deg] drop-shadow-[0_40px_80px_rgba(0,0,0,0.55)]">
-      <img src={imageSrc} alt="Report simulation screen" className="mx-auto h-auto w-[96%] select-none" draggable={false} />
+      <img src={imageSrc} alt="Report simulation screen" className="mx-auto h-auto w-[96%] select-none" draggable="false" />
     </div>
   )
 }
 
-interface Feature {
-  icon: LucideIcon
-  title: string
-  description: string
-  detail: string
-  color: 'pink' | 'purple' | 'blue' | 'green'
-}
-
-interface Module {
-  key: string
-  badge: string
-  title: string
-  description: string
-  features: string[]
-  icon: LucideIcon
-  color: 'red' | 'purple' | 'pink'
-  model: 'detect' | 'analyze' | 'defend'
-  reverse: boolean
-}
-
-interface Stat {
-  value: string
-  label: string
-}
-
-interface FAQ {
-  q: string
-  a: string
-}
-
-export default function GetStarted() {
+function HomePage() {
   const [activeFeature, setActiveFeature] = useState(0)
   const [activeModule, setActiveModule] = useState(0)
 
-  const features: Feature[] = [
+  const features = [
     {
       icon: Target,
       title: 'Siege Map Defense',
@@ -154,7 +114,7 @@ export default function GetStarted() {
     },
   ]
 
-  const modules: Module[] = [
+  const modules = [
     {
       key: 'detect',
       badge: 'DETECT',
@@ -190,38 +150,11 @@ export default function GetStarted() {
     },
   ]
 
-  const stats: Stat[] = [
+  const stats = [
     { value: '99%', label: 'Threat Detection Rate' },
     { value: '500+', label: 'Training Scenarios' },
     { value: '24/7', label: 'Active Monitoring' },
     { value: '100%', label: 'Gamified Learning' },
-  ]
-
-  const faqs: FAQ[] = [
-    {
-      q: 'What types of attacks does SOCIOQUEST simulate?',
-      a: 'SOCIOQUEST simulates email phishing, SMS scams, voice call impersonation, and multi-channel social engineering attacks. Our AI-powered engine creates realistic scenarios that mirror actual threats your organization might face.',
-    },
-    {
-      q: 'How does the department-based system work?',
-      a: "Each user is assigned to a specific department and can only repair/strengthen their own department's defenses. This creates focused accountability and allows admins to track which teams are most vulnerable to attacks.",
-    },
-    {
-      q: 'Is user data kept private and secure?',
-      a: 'Yes. SOCIOQUEST uses anonymous user IDs to protect personal information. All data is securely stored with enterprise-grade encryption, and we follow strict privacy-first design principles.',
-    },
-    {
-      q: 'Can I customize the difficulty of simulations?',
-      a: "Absolutely. Admins have full control over simulation difficulty, attack types, and deployment schedules. You can scale complexity based on your team's current skill level and training goals.",
-    },
-    {
-      q: "What's the difference between admin and user access?",
-      a: 'Admins can create simulations, manage users, view organization-wide analytics, and monitor all departments. Users access training modules, participate in simulations, complete quizzes, repair their department, and track personal progress.',
-    },
-    {
-      q: 'How does the point and leveling system work?',
-      a: 'Users earn points by correctly identifying threats, completing quizzes, and making smart defense decisions. Points unlock new levels and can be spent as resilience tokens to repair department defenses. Incorrect actions result in point penalties.',
-    },
   ]
 
   return (
@@ -377,49 +310,46 @@ export default function GetStarted() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-6">
-            {features.map((feature, index) => {
-              const Icon = feature.icon
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  onHoverStart={() => setActiveFeature(index)}
-                  className={`p-6 rounded-xl border-2 transition-all cursor-pointer ${
-                    activeFeature === index ? 'border-pink-500 bg-pink-500/5' : 'border-gray-800 bg-gray-900 hover:border-gray-700'
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                onHoverStart={() => setActiveFeature(index)}
+                className={`p-6 rounded-xl border-2 transition-all cursor-pointer ${
+                  activeFeature === index ? 'border-pink-500 bg-pink-500/5' : 'border-gray-800 bg-gray-900 hover:border-gray-700'
+                }`}
+              >
+                <div
+                  className={`inline-flex p-3 rounded-lg mb-4 ${
+                    feature.color === 'pink'
+                      ? 'bg-pink-500/20'
+                      : feature.color === 'purple'
+                        ? 'bg-purple-500/20'
+                        : feature.color === 'blue'
+                          ? 'bg-blue-500/20'
+                          : 'bg-green-500/20'
                   }`}
                 >
-                  <div
-                    className={`inline-flex p-3 rounded-lg mb-4 ${
+                  <feature.icon
+                    className={`w-6 h-6 ${
                       feature.color === 'pink'
-                        ? 'bg-pink-500/20'
+                        ? 'text-pink-500'
                         : feature.color === 'purple'
-                          ? 'bg-purple-500/20'
+                          ? 'text-purple-500'
                           : feature.color === 'blue'
-                            ? 'bg-blue-500/20'
-                            : 'bg-green-500/20'
+                            ? 'text-blue-500'
+                            : 'text-green-500'
                     }`}
-                  >
-                    <Icon
-                      className={`w-6 h-6 ${
-                        feature.color === 'pink'
-                          ? 'text-pink-500'
-                          : feature.color === 'purple'
-                            ? 'text-purple-500'
-                            : feature.color === 'blue'
-                              ? 'text-blue-500'
-                              : 'text-green-500'
-                      }`}
-                    />
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-                  <p className="text-gray-400 text-sm mb-3">{feature.description}</p>
-                  <p className="text-gray-500 text-xs leading-relaxed">{feature.detail}</p>
-                </motion.div>
-              )
-            })}
+                  />
+                </div>
+                <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
+                <p className="text-gray-400 text-sm mb-3">{feature.description}</p>
+                <p className="text-gray-500 text-xs leading-relaxed">{feature.detail}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -603,23 +533,20 @@ export default function GetStarted() {
               { icon: Layers, title: 'Multi-Department', desc: 'Team segmentation' },
               { icon: Clock, title: '24/7 Access', desc: 'Always available' },
               { icon: FileText, title: 'Reports', desc: 'Export capabilities' },
-            ].map((item, index) => {
-              const ItemIcon = item.icon
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.05 }}
-                  className="bg-gray-900 border border-gray-800 rounded-lg p-4 text-center hover:border-pink-500/30 transition-all"
-                >
-                  <ItemIcon className="w-8 h-8 text-pink-500 mx-auto mb-2" />
-                  <h4 className="font-bold text-sm mb-1">{item.title}</h4>
-                  <p className="text-gray-500 text-xs">{item.desc}</p>
-                </motion.div>
-              )
-            })}
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05 }}
+                className="bg-gray-900 border border-gray-800 rounded-lg p-4 text-center hover:border-pink-500/30 transition-all"
+              >
+                <item.icon className="w-8 h-8 text-pink-500 mx-auto mb-2" />
+                <h4 className="font-bold text-sm mb-1">{item.title}</h4>
+                <p className="text-gray-500 text-xs">{item.desc}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -642,7 +569,32 @@ export default function GetStarted() {
           </motion.div>
 
           <div className="space-y-4">
-            {faqs.map((faq, index) => (
+            {[
+              {
+                q: 'What types of attacks does SOCIOQUEST simulate?',
+                a: 'SOCIOQUEST simulates email phishing, SMS scams, voice call impersonation, and multi-channel social engineering attacks. Our AI-powered engine creates realistic scenarios that mirror actual threats your organization might face.',
+              },
+              {
+                q: 'How does the department-based system work?',
+                a: "Each user is assigned to a specific department and can only repair/strengthen their own department's defenses. This creates focused accountability and allows admins to track which teams are most vulnerable to attacks.",
+              },
+              {
+                q: 'Is user data kept private and secure?',
+                a: 'Yes. SOCIOQUEST uses anonymous user IDs to protect personal information. All data is securely stored with enterprise-grade encryption, and we follow strict privacy-first design principles.',
+              },
+              {
+                q: 'Can I customize the difficulty of simulations?',
+                a: "Absolutely. Admins have full control over simulation difficulty, attack types, and deployment schedules. You can scale complexity based on your team's current skill level and training goals.",
+              },
+              {
+                q: "What's the difference between admin and user access?",
+                a: 'Admins can create simulations, manage users, view organization-wide analytics, and monitor all departments. Users access training modules, participate in simulations, complete quizzes, repair their department, and track personal progress.',
+              },
+              {
+                q: 'How does the point and leveling system work?',
+                a: 'Users earn points by correctly identifying threats, completing quizzes, and making smart defense decisions. Points unlock new levels and can be spent as resilience tokens to repair department defenses. Incorrect actions result in point penalties.',
+              },
+            ].map((faq, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -676,10 +628,12 @@ export default function GetStarted() {
 
       <footer className="py-8 px-6 bg-black border-t border-gray-900">
         <div className="max-w-6xl mx-auto text-center text-gray-600 text-sm">
-          <p className="mb-2">Davao del Norte State College • Institute of Computing</p>
+          <p className="mb-2">Davao del Norte State College ΓÇó Institute of Computing</p>
           <p>&copy; 2026 SOCIOQUEST. All rights reserved.</p>
         </div>
       </footer>
     </div>
   )
 }
+
+export default HomePage
