@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router";
-import GetStarted from "./pages/GetStarted";
+import GetStarted from "./pages/GetStarted.jsx";
 import GetStartedAlt from "./pages/GetStartedAlt";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
